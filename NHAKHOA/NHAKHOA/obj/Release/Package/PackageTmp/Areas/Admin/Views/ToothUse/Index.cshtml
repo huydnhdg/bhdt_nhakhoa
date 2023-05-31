@@ -1,0 +1,124 @@
+﻿@model PagedList.IPagedList<NHAKHOA.Models.ToothUseModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4 class="text-center">THIẾT LẬP BẢO HÀNH RĂNG</h4>
+<hr />
+<div class="detail-cus">
+    <div class="col-md-7">
+
+    </div>
+    <div class="col-md-5">
+        @using (Html.BeginForm("Index", "ToothUse", FormMethod.Get))
+        {
+            <table class="table table-condensed">
+                <tr>
+                    <td class="form-horizontal">
+                        <label class="control-label col-md-3">Tìm kiếm</label>
+                        <div class="col-md-6">
+                            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "..." })
+                        </div>
+                        <button type="submit" class="btn btn-info col-md-3"><i class="glyphicon glyphicon-search"></i> Tìm kiếm</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-horizontal">
+                        <label class="control-label col-md-3">Ngày giao</label>
+                        <div class="col-md-6">
+                            @Html.TextBox("Startdate", ViewBag.currentStart as string, new { @class = "form-control", @type = "date" })
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-horizontal">
+                        <label class="control-label col-md-3">Đến ngày</label>
+                        <div class="col-md-6">
+                            @Html.TextBox("Enddate", ViewBag.currentEnd as string, new { @class = "form-control", @type = "date" })
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</div>
+<div>
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+
+                <th>Họ tên</th>
+                <th>Loại sứ</th>
+                <th>Công việc</th>
+                <th>Số răng</th>
+                <th>Số lượng</th>
+                <th>Màu</th>
+                <th>Bác sĩ</th>
+                <th>Ngày nhận</th>
+                <th>Ngày giao</th>
+                <th>Thời hạn</th>
+                <th>Hết hạn</th>
+                <th>Thẻ BH</th>
+                <th>Trạng thái</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@Html.DisplayFor(modelItem => item.CusName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Tooth)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Prod)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ToothNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Count)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Color)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Doctor)</td>
+                    <td>
+                        @if (item.Recevicedate != null)
+                        {
+                            @Convert.ToDateTime(item.Recevicedate).ToString("dd/MM/yyyy")
+                        }
+                    </td>
+                    <td>
+                        @if (item.Senddate != null)
+                        {
+                            @Convert.ToDateTime(item.Senddate).ToString("dd/MM/yyyy")
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Limited)</td>
+                    <td>
+                        @if (item.Senddate != null)
+                        {
+                            @Convert.ToDateTime(item.Senddate.Value.AddMonths(item.Limited)).ToString("dd/MM/yyyy")
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.CodeBH)</td>
+                    <td>
+                        @if (item.Senddate != null && item.CodeBH != null)
+                        {
+                            <span class="text-success">Hoàn thành</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Chờ sản xuất</span>
+                        }
+                    </td>
+                    <td style="width:150px">
+                        @if (User.IsInRole("Admin") || User.IsInRole("Mod"))
+                        {
+                            <a class="btn" href="/Admin/Bill/Edit/@item.IDBill"><i class="glyphicon glyphicon-wrench"></i></a>
+                            <a class="btn" href="#"><i class="glyphicon glyphicon-trash"></i></a>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, currentFilter = ViewBag.CurrentFilter, currentStart = ViewBag.currentStart, currentEnd = ViewBag.currentEnd, currentStatus = ViewBag.Status }))
+<p class="pageof">page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</p>

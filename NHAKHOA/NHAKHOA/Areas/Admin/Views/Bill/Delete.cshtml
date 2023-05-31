@@ -1,0 +1,127 @@
+﻿@model NHAKHOA.Models.Bill
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<h3>Lưu ý: xóa phiếu khám, tất cả thủ thuật liên quan sẽ bị xóa đi..</h3>
+<div>
+    <h4>Thông tin phiếu khám</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IDCustomer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDCustomer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDDentalClinic)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDDentalClinic)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Doctor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Doctor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CodeBH)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CodeBH)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Createdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Createdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Editdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Editdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Createby)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Createby)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Editby)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Editby)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Recevicedate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Recevicedate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Senddate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Senddate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

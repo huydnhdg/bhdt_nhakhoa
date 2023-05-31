@@ -1,0 +1,247 @@
+﻿
+@model NHAKHOA.Models.BillDetailViewModel
+@{
+    ViewBag.Title = "Edit";
+    List<NHAKHOA.Models.DentalClinic> ldental = (List<NHAKHOA.Models.DentalClinic>)TempData["dental"];
+    List<NHAKHOA.Models.Province> lprovince = (List<NHAKHOA.Models.Province>)TempData["province"];
+    List<NHAKHOA.Models.Tooth> ltooth = (List<NHAKHOA.Models.Tooth>)TempData["tooth"];
+    NHAKHOA.Models.Customer customer = (NHAKHOA.Models.Customer)TempData["customer"];
+
+    var listItems = new List<SelectListItem>
+{
+                new SelectListItem { Value = "0" , Text = "Chờ sản xuất" },
+                new SelectListItem { Value = "1" , Text = "Hoàn thành" },
+                };
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4 class="text-center">THÔNG TIN PHIẾU KHÁM</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Bill.ID)
+    @Html.HiddenFor(model => model.Bill.IDCustomer)
+    @Html.HiddenFor(model => model.Bill.Createdate)
+    @Html.HiddenFor(model => model.Bill.Createby)
+    @Html.HiddenFor(model => model.Bill.Code)
+    @Html.HiddenFor(model => model.Bill.Editby)
+    @Html.HiddenFor(model => model.Bill.Editdate)
+    @Html.HiddenFor(model => model.Bill.CateTooth)
+    @Html.HiddenFor(model => model.Bill.CountBH)
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Họ và tên</label>
+        <div class="col-md-3">
+            <input class="form-control col-md-3" value="@customer.Name" readonly />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Số điện thoại</label>
+        <div class="col-md-3">
+            <input class="form-control col-md-3" value="@customer.PhoneNumber" readonly />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Ngày sinh</label>
+        <div class="col-md-3">
+            <input class="form-control col-md-3" value="@Convert.ToDateTime(customer.Birthday).ToString("dd/MM/yyyy")" readonly />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Địa chỉ</label>
+        <div class="col-md-3">
+            <input class="form-control col-md-3" value="@customer.Adress @customer.Ward @customer.District @customer.Province" readonly />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Bill.IDDentalClinic, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-2">
+            @Html.DropDownListFor(model => model.Bill.IDDentalClinic, new SelectList(ldental, "ID", "Name"),
+    new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Bill.IDDentalClinic, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(model => model.Bill.Doctor, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-2">
+            @Html.EditorFor(model => model.Bill.Doctor, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Bill.Doctor, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(model => model.Bill.Recevicedate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-2">
+            @Html.TextBoxFor(m => m.Bill.Recevicedate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.Bill.Recevicedate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Bill.CodeBH, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-2">
+            @Html.EditorFor(model => model.Bill.CodeBH, new { htmlAttributes = new { @class = "form-control", @onchange = "checkCodeBH()", @required = "required" } })
+            @Html.ValidationMessageFor(model => model.Bill.CodeBH, "", new { @class = "text-danger" })
+        </div>
+
+        @*@Html.LabelFor(model => model.Bill.Category, htmlAttributes: new { @class = "control-label col-md-1" })
+        <div class="col-md-3">
+            @Html.DropDownListFor(model => model.Bill.Category,
+           new List<SelectListItem>
+             {
+                    new SelectListItem { Value = "Tạo mới" , Text = "Tạo mới" },
+                    new SelectListItem { Value = "Bảo hành" , Text = "Bảo hành" },
+             },
+             new { @class = "form-control" })
+
+            @Html.ValidationMessageFor(model => model.Bill.Category, "", new { @class = "text-danger" })
+        </div>*@
+
+        @Html.LabelFor(model => model.Bill.Recevicedate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-2">
+            @Html.TextBoxFor(m => m.Bill.Recevicedate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.Bill.Recevicedate, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(model => model.Bill.Senddate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-2">
+            @Html.TextBoxFor(m => m.Bill.Senddate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Bill.Senddate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Loại răng</th>
+                    <th>Số răng</th>
+                    <th>Màu</th>
+                    <th>Số lượng</th>
+                    @*<th>Trạng thái</th>*@
+                    <th>Công việc</th>
+                </tr>
+            </thead>
+            <tbody id="tbBills">
+                @for (var i = 0; i < Model.BillDetails.Count(); i++)
+                {
+                    @Html.HiddenFor(model => model.BillDetails[i].ID)
+                    @Html.HiddenFor(model => model.BillDetails[i].IDBill)
+                    <tr>
+                        <td class="col-md-2">
+                            @Html.DropDownListFor(model => model.BillDetails[i].IDTooth, new SelectList(ltooth, "ID", "Name", Model.BillDetails[i].IDTooth), "--Chọn răng--", new { @class = "form-control" })
+                        </td>
+                        <td class="col-md-1">
+                            @Html.EditorFor(model => model.BillDetails[i].ToothNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td class="col-md-1">
+                            @Html.EditorFor(model => model.BillDetails[i].Color, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td class="col-md-1">
+                            @Html.EditorFor(model => model.BillDetails[i].Count, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        @*<td class="col-md-1">
+
+                                @Html.DropDownListFor(model => model.BillDetails[i].Status, new SelectList(listItems, "Value", "Text", Model.BillDetails[i].Status), new { @class = "form-control" })
+                            </td>*@
+                        <td class="col-md-2">
+                            @Html.EditorFor(model => model.BillDetails[i].Prod, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="form-group">
+        <div class="text-center">
+            <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-ok"></i> Lưu thông tin</button>
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "Bill", new { id = Model.Bill.IDCustomer }, null)
+</div>
+
+@section scripts{
+
+    <script>
+        function checkCodeBH() {
+            var code = $("#Bill_CodeBH").val();
+            if (code != "") {
+                //check trung ma bao hanh
+                $.ajax
+                    ({
+                        url: '/Bill/CheckCodeBH',
+                        type: 'POST',
+                        datatype: 'application/json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            code: code
+                        }),
+                        success: function (result) {
+                            if (result != "ok") {
+                                alert("Mã bảo hành mới đã tồn tại. Đây là mã cũ !");
+                                $("#Bill_CodeBH").val(code);
+                            }
+
+                        },
+                        error: function () {
+                            alert("Hệ thống xảy ra lỗi.")
+                        },
+                    });
+            }
+        }
+
+
+        function GetCity() {
+            var name = $("#Province").val();
+            $("#District").html("");
+            $.ajax
+                ({
+                    url: '/Customer/GetCity',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        name: name
+                    }),
+                    success: function (result) {
+                        $.each($.parseJSON(result), function (i, city) {
+                            $("#District").append
+                                ($('<option></option>').val(city).html(city))
+                        })
+                    },
+                    error: function () {
+                        alert("Hệ thống xảy ra lỗi.")
+                    },
+                });
+        }
+        function GetDistrict() {
+            var name = $("#District").val();
+            $("#Ward").html("");
+            $.ajax
+                ({
+                    url: '/Customer/GetDistrict',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        name: name
+                    }),
+                    success: function (result) {
+                        $.each($.parseJSON(result), function (i, city) {
+                            $("#Ward").append
+                                ($('<option></option>').val(city).html(city))
+                        })
+                    },
+                    error: function () {
+                        alert("Hệ thống xảy ra lỗi.")
+                    },
+                });
+        }
+
+    </script>
+}

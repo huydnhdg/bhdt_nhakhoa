@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bd6d55e79d5c49d0bc51ff6de7374b57" Name="Diagram1">
+        <EntityTypeShape EntityType="NHAKHOAModel.Country" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="NHAKHOAModel.DentalClinic" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NHAKHOAModel.District" Width="1.5" PointX="5.25" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NHAKHOAModel.Province" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NHAKHOAModel.Tooth" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NHAKHOAModel.Ward" Width="1.5" PointX="7.5" PointY="2" IsExpanded="true" />
+        <AssociationConnector Association="NHAKHOAModel.FK_Province_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="NHAKHOAModel.FK_District_Province" ManuallyRouted="false" />
+        <AssociationConnector Association="NHAKHOAModel.FK_Ward_District" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="NHAKHOAModel.Customer" Width="1.5" PointX="5.375" PointY="5.75" />
+        <EntityTypeShape EntityType="NHAKHOAModel.AspNetRole" Width="1.5" PointX="9.375" PointY="5.75" />
+        <EntityTypeShape EntityType="NHAKHOAModel.AspNetUser" Width="1.5" PointX="9.375" PointY="8.75" />
+        <AssociationConnector Association="NHAKHOAModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="NHAKHOAModel.BillDetail" Width="1.5" PointX="0.75" PointY="10.75" />
+        <EntityTypeShape EntityType="NHAKHOAModel.Bill" Width="1.5" PointX="10.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NHAKHOAModel.Warranti" Width="1.5" PointX="3.375" PointY="10.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

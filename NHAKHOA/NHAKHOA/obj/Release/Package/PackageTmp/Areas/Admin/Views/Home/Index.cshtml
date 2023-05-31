@@ -1,0 +1,139 @@
+﻿@model NHAKHOA.Models.ReportModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<style>
+    .report-table tr td:last-child {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+    }
+</style>
+<h4 class="text-center" style="font-size:31px">THỐNG KÊ</h4>
+<hr />
+<div class="detail-cus row">
+    <div class="col-md-4 cus-info">
+    </div>
+    <div class="col-md-8">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+        {
+            <table class="table table-condensed">
+                <tr>
+                    <td class="form-horizontal">
+                        <label class="control-label col-md-2">Từ ngày</label>
+                        <input class="form-control" style="float:left;max-width:150px" type="date" value="@ViewBag.currentStart" name="startDate" id="startDate" />
+                        <label class="control-label col-md-2">Từ ngày</label>
+                        <input class="form-control" style="float:left;max-width:150px" type="date" value="@ViewBag.currentEnd" name="endDate" id="endDate" />
+
+                        <button style="margin-left:50px" type="submit" class="btn btn-info"><i class="glyphicon glyphicon-search"></i> Tìm kiếm</button>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</div>
+<div class="clearfix">
+    <div class="col-lg-2">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Khách hàng
+            </div>
+            <div class="panel-body">
+                <h3 style="color:lightpink">@Model.customer <i style="font-size:50px" class="glyphicon glyphicon-user" aria-hidden="true"></i></h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Phiếu khám
+            </div>
+            <div class="panel-body">
+                <h3 style="color:lightpink">@Model.bill <i style="font-size:50px" class="glyphicon glyphicon-list-alt" aria-hidden="true"></i></h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                Bảo hành
+            </div>
+            <div class="panel-body">
+                <h3 style="color:lightpink">@Model.warranti <i style="font-size:50px" class="glyphicon glyphicon-wrench" aria-hidden="true"></i></h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <table class="table table-bordered report-table">
+            <thead>
+                <tr>
+                    <th>Loại răng</th>
+                    <th>Mã răng</th>
+                    <th>Số lượng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.tooth)
+                {
+                    <tr>
+                        <td>
+                            <a href="/admin/bill/list/?tooth=@item.Name&Startdate=@ViewBag.currentStart&Enddate=@ViewBag.currentEnd" title="chi tiết">
+                                @item.Name
+                            </a>                        
+                        </td>
+                        <td>@item.Code</td>
+                        <td>@item.Count</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="clearfix">
+    @*<div class="col-md-6">
+            <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="chartContainer1" style="height: 370px; width: 100%;"></div>
+        </div>*@
+</div>
+
+@section scripts{
+    <script>
+        window.onload = function () {
+            var chart = new CanvasJS.Chart("chartContainer", {
+                theme: "light2",
+                animationEnabled: false,
+                title: {
+                    text: "Thống kê khách hàng"
+                },
+                data: [
+                    {
+                        type: "column",
+                        dataPoints: @Html.Raw(ViewBag.DataPoints1)
+                    }
+                ]
+            });
+            chart.render();
+
+            var chart1 = new CanvasJS.Chart("chartContainer1", {
+                theme: "light1",
+                animationEnabled: false,
+                title: {
+                    text: "Thống kê răng"
+                },
+                data: [
+                    {
+                        type: "column",
+                        dataPoints: @Html.Raw(ViewBag.DataPoints2)
+                    }
+                ]
+            });
+            chart1.render();
+        }
+    </script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+}

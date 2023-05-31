@@ -1,0 +1,194 @@
+﻿@model PagedList.IPagedList<NHAKHOA.Models.BillViewModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "List";
+}
+
+<h4 class="text-center">DANH SÁCH PHIẾU KHÁM</h4>
+<hr />
+<div class="detail-cus row">
+    <div class="col-md-7">
+
+    </div>
+    <div class="col-md-5">
+        @using (Html.BeginForm("List", "Bill", FormMethod.Get))
+        {
+            <table class="table table-condensed">
+                <tr>
+
+                    <td class="hidden">@Html.TextBox("tooth", ViewBag.currentooth as string, new { @class = "form-control", placeholder = "..." })</td>
+                </tr>
+                <tr>
+                    
+                    <td colspan="2" class="form-horizontal">
+                        <label class="control-label col-md-3">Tìm kiếm</label>
+                        <div class="col-md-6">
+                            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "..." })
+                        </div>
+                        <button type="submit" class="btn btn-info col-md-3"><i class="glyphicon glyphicon-search"></i> Tìm kiếm</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-horizontal">
+                        <label class="control-label col-md-3">Ngày giao</label>
+                        <div class="col-md-6">
+                            @Html.TextBox("Startdate", ViewBag.currentStart as string, new { @class = "form-control", @type = "date" })
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-horizontal">
+                        <label class="control-label col-md-3">Đến ngày</label>
+                        <div class="col-md-6">
+                            @Html.TextBox("Enddate", ViewBag.currentEnd as string, new { @class = "form-control", @type = "date" })
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</div>
+<div>
+    <table class="table table-hover table-bordered" id="StudentGrid">
+        <thead>
+            <tr>
+
+                <th>Thẻ BH</th>
+                <th>Loại sứ</th>
+                <th>Phòng khám</th>
+                <th>Bác sĩ</th>
+                <th>Người tạo</th>
+                <th>Ngày nhận</th>
+                <th>Ngày giao</th>
+                <th>Trạng thái</th>
+                <th>Số lượng</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.ID)</td>
+
+                    <td>@Html.DisplayFor(modelItem => item.CodeBH)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CateTooth)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Dental)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Doctor)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Createby)</td>
+                    <td>
+                        @if (item.Recevicedate != null)
+                        {
+                            @Convert.ToDateTime(item.Recevicedate).ToString("dd/MM/yyyy")
+                        }
+                    </td>
+                    <td>
+                        @if (item.Senddate != null)
+                        {
+                            @Convert.ToDateTime(item.Senddate).ToString("dd/MM/yyyy")
+                        }
+                    </td>
+                    <td>
+                        @if (item.Senddate != null && item.CodeBH != null)
+                        {
+                            <span class="text-success">Hoàn thành</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Chờ sản xuất</span>
+                        }
+                    </td>
+                    <td class="text-center">@item.CountTooth</td>
+                    <td style="width:200px">
+                        <a href="/admin/bill/details_newtab?studentId=@item.ID"><i class="glyphicon glyphicon-eye-open"></i></a>
+                        @*<a class="btn details" href="javascript:void(0)"><i class="glyphicon glyphicon-eye-open"></i></a>*@
+
+                        @*<a class="btn" href="/Admin/ToothUse/List/@item.ID"><i class="glyphicon glyphicon-th-list"></i></a>*@
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Mod"))
+                        {
+                            <a class="btn" href="/Admin/Bill/Edit/@item.ID"><i class="glyphicon glyphicon-wrench"></i></a>
+                            <a class="btn" href="/admin/bill/delete/@item.ID"><i class="glyphicon glyphicon-trash"></i></a>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+@Html.PagedListPager(Model, page => Url.Action("List",
+    new { page, currenTooth = ViewBag.currentooth, currentFilter = ViewBag.CurrentFiltercurrentFilter = ViewBag.CurrentFilter, currentStart = ViewBag.currentStart, currentEnd = ViewBag.currentEnd, currentStatus = ViewBag.Status }))
+<p class="pageof">page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</p>
+
+
+<!--Bootstrap Pop Up modal-->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+
+            <div class="modal-body" id="ModalBody">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--End of Bootstrap Pop-Up modal-->
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+
+
+            $("#StudentGrid .details").click(function () {
+                //get student id of row clicked
+                var studentId = $(this).closest("tr").find("td").eq(0).html();
+                $.ajax({
+                    type: "POST", //Method type
+                    url: "/Bill/Details", //url to load partial view
+                    data: '{studentId: "' + studentId + '" }', //send student id
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#ModalBody').html(response);
+                        $('#myModal').modal('show');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        var doc = new jsPDF();
+
+        function printDiv(divId,
+            title) {
+
+            let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
+
+            mywindow.document.write(`<html><head><title>${title}</title>`);
+            mywindow.document.write('</head><body >');
+            mywindow.document.write(document.getElementById(divId).innerHTML);
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10*/
+
+            mywindow.print();
+            mywindow.close();
+
+            return true;
+        }
+
+
+    </script>
+}

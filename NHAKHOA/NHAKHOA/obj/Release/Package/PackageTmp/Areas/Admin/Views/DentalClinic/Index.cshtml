@@ -1,0 +1,67 @@
+﻿@model PagedList.IPagedList<NHAKHOA.Models.DentalClinic>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4 class="text-center">DANH SÁCH PHÒNG KHÁM</h4>
+<hr />
+<div class="detail-cus row">
+    <div class="col-md-7"></div>
+    <div class="col-md-5">
+        @using (Html.BeginForm("Index", "DentalClinic", FormMethod.Get))
+        {
+            <table class="table table-condensed">
+                <tr>
+
+                    <td colspan="2" class="form-horizontal">
+                        <label class="control-label col-md-3">Tìm kiếm</label>
+                        <div class="col-md-6">
+                            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "..." })
+                        </div>
+                        <button type="submit" class="btn btn-info col-md-3"><i class="glyphicon glyphicon-search"></i> Tìm kiếm</button>
+                    </td>
+                </tr>
+
+            </table>
+        }
+    </div>
+
+</div>
+<div>
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Phòng khám</th>
+                <th>Số điện thoại</th>
+                <th>Địa chỉ</th>
+                <th>Ghi chú</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Adress) @Html.DisplayFor(modelItem => item.Ward) @Html.DisplayFor(modelItem => item.District) @Html.DisplayFor(modelItem => item.Province)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Note)</td>
+                    <td style="width:150px">
+                        <a class="btn" href="/Admin/ToothUse/ListofDental/@item.ID"><i class="glyphicon glyphicon-th-list"></i></a>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Mod"))
+                        {
+                            <a class="btn" href="/Admin/DentalClinic/Edit/@item.ID"><i class="glyphicon glyphicon-edit"></i></a>
+                            <a class="btn" href="/Admin/DentalClinic/Delete/@item.ID"><i class="glyphicon glyphicon-trash"></i></a>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, currentFilter = ViewBag.CurrentFilter, currentStart = ViewBag.currentStart, currentEnd = ViewBag.currentEnd, currentStatus = ViewBag.Status }))
+<p class="pageof">page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</p>

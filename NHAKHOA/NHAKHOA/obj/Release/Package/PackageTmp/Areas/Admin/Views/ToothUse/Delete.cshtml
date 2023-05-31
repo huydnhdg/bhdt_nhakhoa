@@ -1,0 +1,102 @@
+﻿@model NHAKHOA.Models.BillDetail
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h3>Bạn xóa thủ thuật này?</h3>
+<div>
+    <h4>Thông tin thủ thuật</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IDTooth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDTooth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Prod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Prod)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Recevicedate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Recevicedate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Senddate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Senddate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDBill)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDBill)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Count)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Count)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ToothNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ToothNumber)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

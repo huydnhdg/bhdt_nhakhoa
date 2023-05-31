@@ -1,0 +1,110 @@
+﻿@model NHAKHOA.Models.BillCustomerModel
+
+<div id="pdf" class="">
+    <style>
+        p {
+            margin-top: 3px;
+            margin-bottom: 3px;
+        }
+
+        #pdf table tr td {
+            border: 1px solid gray;
+            padding: 5px;
+        }
+    </style>
+    <div style="padding:15px;font-size:13px;font-family:Arial;">
+        <div>
+            <div>
+                <div class="clearfix" style="overflow:hidden">
+                    <div style="float:left">
+                        <img width="50" src="data:image/jpeg;base64,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" />
+                    </div>
+                    <div>
+                        <div style="text-align:center;font-size:16px;font-weight:bold">
+                            <p>LABO 3M PLUS<sup>+</sup></p>
+                            <p>Địa chỉ: Linh Đàm - Hoàng Mai - Hà Nội</p>
+                            <p>Điện thoại: 0912345678</p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="clearfix" style="border-top: 1px solid #000; width: 80%;margin:0 auto; height: 1px;margin-top:15px;margin-bottom:15px"></div>
+                <div class="clearfix" style="">
+                    <div class="clearfix">
+                        <p style="text-align:center;font-weight:bold;font-size:16px">PHIẾU YÊU CẦU</p>
+                    </div>
+                    <div class="clearfix" style="overflow:hidden;text-align:justify">
+                        <div style="float:left">
+                            <p>Mã số: @Model.bill.Code</p>
+                            <p>Thẻ BH: @Model.bill.CodeBH</p>
+                        </div>
+                        <div style="float:right">
+                            <p>
+                                Ngày nhận mẫu:
+                                @if (Model.bill.Recevicedate != null)
+                                {
+                                    @Convert.ToDateTime(Model.bill.Recevicedate).ToString("dd/MM/yyyy")
+                                }
+                            </p>
+                            <p>
+                                Ngày giao mẫu:
+                                @if (Model.bill.Senddate != null)
+                                {
+                                    @Convert.ToDateTime(Model.bill.Senddate).ToString("dd/MM/yyyy")
+                                }
+                            </p>
+                            <p>
+                                Ngày kết thúc bảo hành:
+                                @if (Model.bill.Senddate != null)
+                                {
+                                    @Convert.ToDateTime(Model.bill.Senddate.Value.AddMonths(Model.billdetails.First().Limited)).ToString("dd/MM/yyyy")
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <div class="clearfix" style="overflow:hidden">
+                        <p>Nha Khoa: @Model.dental.Name</p>
+                        <p>Liên hệ: @Model.bill.Doctor - @Model.dental.PhoneNumber</p>
+                        <p>
+                            Bệnh nhân: @Model.customer.Name -
+                            @if (Model.customer.Birthday != null)
+                            {
+                                @Convert.ToDateTime(Model.customer.Birthday).ToString("dd/MM/yyyy")
+                            }
+                        </p>
+                    </div>
+                    <div style="" class="clearfix">
+                        <table class="table table-bordered" style="width: 100%;font-size: 13px;margin-top:10px;">
+                            <tr style="background-color:gray">
+                                <td style="text-align:center">Loại sứ</td>
+                                <td style="text-align:center">Công việc</td>
+                                <td style="text-align:center">Số răng</td>
+                                <td style="text-align:center">Số lượng</td>
+                                <td style="text-align:center">Màu</td>
+                            </tr>
+
+                            @foreach (var item in Model.billdetails)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(model => item.Tooth)</td>
+                                    <td>@Html.DisplayFor(model => item.Prod)</td>
+                                    <td style="text-align:center">@Html.DisplayFor(model => item.ToothNumber)</td>
+                                    <td style="text-align:center">@Html.DisplayFor(model => item.Count)</td>
+                                    <td>@Html.DisplayFor(model => item.Color)</td>
+                                </tr>
+                            }
+
+
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="btn-bot" style="text-align:center;margin-top:50px">
+    <button class="btn btn-default" onclick="printDiv('pdf','Title')"><i class="glyphicon glyphicon-print"></i> Print PDF</button>
+</div>
+

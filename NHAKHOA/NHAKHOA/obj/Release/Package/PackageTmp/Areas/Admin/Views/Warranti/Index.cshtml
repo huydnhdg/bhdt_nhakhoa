@@ -1,0 +1,173 @@
+﻿@model PagedList.IPagedList<NHAKHOA.Models.WarrantiView>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    NHAKHOA.Models.Bill bill = (NHAKHOA.Models.Bill)TempData["bill"];
+}
+<h4 class="text-center">DANH SÁCH BẢO HÀNH @bill.CodeBH</h4>
+<hr />
+<div class="detail-cus row">
+    <div class="col-md-5 cus-info">
+
+    </div>
+    <div class="col-md-7">
+        @using (Html.BeginForm("Index", "Warranti", FormMethod.Get))
+        {
+            <table class="table table-condensed">
+                <tr>
+
+                    <td class="form-horizontal">
+                        <label class="control-label col-md-2">Tìm kiếm</label>
+                        <div class="col-md-4">
+                            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "..." })
+                        </div>
+                        <button type="submit" class="btn btn-info col-md-3"><i class="glyphicon glyphicon-search"></i> Tìm kiếm</button>
+                        <div class="col-md-3">
+                            <a href="#" id="btnCreate" class="btn btn-info"><i class="glyphicon glyphicon-list-alt"></i> Tạo mới bảo hành</a>
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-horizontal">
+                        <label class="control-label col-md-2">Ngày giao</label>
+                        <div class="col-md-4">
+                            @Html.TextBox("Startdate", ViewBag.currentStart as string, new { @class = "form-control", @type = "date" })
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-horizontal">
+                        <label class="control-label col-md-2">Đến ngày</label>
+                        <div class="col-md-4">
+                            @Html.TextBox("Enddate", ViewBag.currentEnd as string, new { @class = "form-control", @type = "date" })
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</div>
+<div>
+    <table class="table table-hover table-bordered" id="StudentGrid">
+        <thead>
+            <tr>
+                <th>Ngày nhận BH</th>
+                <th>Công việc</th>
+                <th>Phòng khám</th>
+                <th>Bác sĩ</th>
+                <th>Ngày trả BH</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="display:none">@Html.DisplayFor(modelItem => item.ID)</td>
+                    <td>
+                        @if (item.Createdate != null)
+                        {
+                            @Convert.ToDateTime(item.Createdate).ToString("dd/MM/yyyy")
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Note)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Dental)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Doctor)</td>
+                    <td>
+                        @if (item.Successdate != null)
+                        {
+                            @Convert.ToDateTime(item.Successdate).ToString("dd/MM/yyyy")
+                        }
+                    </td>
+                    <td style="width:100px">
+                        @if (User.IsInRole("Admin") || User.IsInRole("Mod"))
+                        {
+                            <a class="btn edit" href="javascript:void(0)"><i class="glyphicon glyphicon-edit"></i></a>
+                            <a class="btn" href="/admin/warranti/delete/@item.ID"><i class="glyphicon glyphicon-trash"></i></a>
+
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+<div>
+    <a href="/admin/bill/index/@bill.IDCustomer"><i class="glyphicon glyphicon-triangle-left"></i>Về trang trước</a>
+</div>
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, currentFilter = ViewBag.CurrentFilter, currentStart = ViewBag.currentStart, currentEnd = ViewBag.currentEnd, currentStatus = ViewBag.Status }))
+<p class="pageof">page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</p>
+
+<!--Bootstrap Pop Up modal-->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+
+            <div class="modal-body" id="ModalBody">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--End of Bootstrap Pop-Up modal-->
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#btnCreate").click(function () {
+                //get student id of row clicked
+                $.ajax({
+                    type: "POST", //Method type
+                    url: "/Warranti/AddItem", //url to load partial view
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#ModalBody').html(response);
+                        $('#myModal').modal('show');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+
+
+            $("#StudentGrid .edit").click(function () {
+                //get student id of row clicked
+                var studentId = $(this).closest("tr").find("td").eq(0).html();
+                $.ajax({
+                    type: "POST", //Method type
+                    url: "/Warranti/EditItem", //url to load partial view
+                    data: '{studentId: "' + studentId + '" }', //send student id
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#ModalBody').html(response);
+                        $('#myModal').modal('show');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,60 @@
+﻿@model PagedList.IPagedList<NHAKHOA.Models.AspNetUser>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+<h4 class="text-center">DANH SÁCH TÀI KHOẢN</h4>
+<hr />
+<div class="detail-cus row">
+    <div class="col-md-7">
+
+    </div>
+    <div class="col-md-5">
+        @using (Html.BeginForm("Index", "User", FormMethod.Get))
+        {
+            <table class="table table-condensed">
+                <tr>
+
+                    <td colspan="2" class="form-horizontal">
+                        <label class="control-label col-md-3">Tìm kiếm</label>
+                        <div class="col-md-6">
+                            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "..." })
+                        </div>
+                        <button type="submit" class="btn btn-info col-md-3"><i class="glyphicon glyphicon-search"></i> Tìm kiếm</button>
+                    </td>
+                </tr>
+
+            </table>
+        }
+    </div>
+</div>
+<div>
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Tên tài khoản</th>
+                <th>Số điện thoại</th>
+                <th>Email</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td style="width:250px">
+
+                        <a class="btn" href="/Admin/User/Edit/@item.Id"><i class="glyphicon glyphicon-edit"></i></a>
+                        <a class="btn" href="/Admin/Manage/ChangePassword/@item.Id"><i class="glyphicon glyphicon-cog"></i></a>
+                        <a class="btn" href="/Admin/Manage/EditRole/@item.Id"><i class="glyphicon glyphicon-user"></i></a>
+                        <a class="btn" href="/Admin/User/Delete/@item.Id"><i class="glyphicon glyphicon-trash"></i></a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

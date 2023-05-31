@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jQuery")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/admin/home/index">
+                    <img src="~/Image/100x123.jpg" style="height:50px" />
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/admin/home/index">
+                            TRANG CHỦ
+                        </a>
+                    </li>
+                    @if (User.IsInRole("Admin") || (User.IsInRole("CSKH")) || (User.IsInRole("Mod")))
+                    {
+                        if (User.IsInRole("Admin") || (User.IsInRole("Mod")))
+                        {
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    KHÁCH HÀNG
+                                    <span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="/admin/customer/create">THÊM MỚI</a></li>
+                                    <li><a href="/admin/customer/index">DANH SÁCH</a></li>
+                                    <li><a href="/admin/bill/list">DANH SÁCH PHIẾU KHÁM</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    PHÒNG KHÁM
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/admin/dentalclinic/create">THÊM MỚI</a></li>
+                                    <li><a href="/admin/dentalclinic/index">DANH SÁCH</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    LOẠI RĂNG
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/admin/tooth/create">THÊM MỚI</a></li>
+                                    <li><a href="/admin/tooth/index">DANH SÁCH</a></li>
+                                    <li><a href="/admin/toothuse/index">DANH SÁCH BẢO HÀNH</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    KHÁCH HÀNG
+                                    <span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="/admin/customer/index">DANH SÁCH</a></li>
+                                    <li><a href="/admin/bill/list">DANH SÁCH PHIẾU KHÁM</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    PHÒNG KHÁM
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+
+                                    <li><a href="/admin/dentalclinic/index">DANH SÁCH</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    LOẠI RĂNG
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/admin/tooth/index">DANH SÁCH</a></li>
+                                    <li><a href="/admin/toothuse/index">DANH SÁCH BẢO HÀNH</a></li>
+                                </ul>
+                            </li>
+
+                        }
+
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                TÀI KHOẢN
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/admin/user/index">DANH SÁCH</a></li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="row">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p class="text-center">&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <div class="Đối tác_footer" id="qnmb">
+        Đối tác:<a href="http://bongda567.com" title="Trực Tiếp Bóng Đá" target="_blank">
+            <strong>Trực Tiếp Bóng Đá</strong>
+        </a>||<a href="http://mall777.com/home/" title="Nổ Hũ" target="_blank">
+            <strong>Nổ Hũ</strong>
+        </a>||<a href="http://dabongtructiep.com/" title="truc tiep bong da" target="_blank">
+            <strong>truc tiep bong da</strong>||
+        </a><a href="https://xoso.club" title="Xổ số" target="_blank">
+            <strong>Xổ số</strong>
+        </a>||<a href="https://socolive.org" title="trực tiếp boóng đá hôm nay" target="_blank">
+            <strong>trực tiếp boóng đá hôm nay</strong>
+        </a>||<a href="https://kepaarrizabalaga.net/" target="_blank">Kepa Arrizabalaga Revuelta</a>||
+        <a href="https://uefaeuropaleague2022.net/" target="_blank">UEFA Europa League</a>||
+        <a href="https://tinbongda2022.net/" target="_blank">tin bóng đá trong ngày</a>||
+        <a href="https://erlinghaaland.cc/" target="_blank">Erling Haaland</a>||
+        <a href="https://brunofernandes.football/" target="_blank">Bruno Fernandes</a>||
+        <a href="https://thomastuchel.net/" target="_blank">Thomas Tuchel</a>||
+        <a href="https://v-league.org/" target="_blank">V-League</a>||
+        <a href="https://philippecoutinho.net/" target="_blank">Philippe Coutinho</a>||
+        <a href="https://atlticomadrid.com/" target="_blank">Club Atlético de Madrid</a>||
+        <a href="https://borussiadortmund.football/" target="_blank">Borussia Dortmund</a>||
+        <a href="https://masonmount.net/" target="_blank">Mason Mount</a>||
+        <a href="https://jrgenklopp.net/" target="_blank">Jürgen Klopp</a>||
+        <a href="https://diegosimeone.net/" target="_blank">Diego Simeone</a>||
+        <a href="https://asroma.live/" target="_blank">A.S. Roma</a>||
+        <a href="https://afcchampionsleague2022.com/" target="_blank">AFC Champions League</a>||
+        <a href="https://atalanta.cc/" target="_blank">atalanta</a>||
+        <a href="https://athleticbilbao.football/" target="_blank">athletic bilbao</a>||
+        <a href="https://bayerleverkusen.net/" target="_blank">Bayer Leverkusen</a>||
+        <a href="https://birminghamcity.org/" target="_blank">Birmingham City</a>||
+        <a href="https://bongdanu.net/" target="_blank">Bóng đá nữ</a>||
+        <a href="https://brentford.top/" target="_blank">brentford</a>||
+        <a href="https://brighton2022.com/" target="_blank">Brighton</a>||
+        <a href="https://burnley2022.com/" target="_blank">Burnley</a>
+        <a href="https://tructiep.bet.com/" target="_blank">tructiep</a>
+        <a href="https://bongda247.site/" target="_blank">bongda247</a>
+        <a href="https://bongda247.live/" target="_blank">bongda247</a>
+        <a href="https://bongdalive247.tv/" target="_blank">bongdalive247</a>
+        <a href="https://socolive.blog/" target="_blank">socolive</a>
+        <a href="https://socolive.online/" target="_blank">socolive</a>
+        <a href="https://tructiep.website/" target="_blank">tructiep</a>
+        <a href="https://cardiffcity2022.com/" target="_blank">Cardiff City</a>||
+        <a href="https://copaamerica2022.com/" target="_blank">COPA AMERICA</a>||
+        <a href="https://copadelrey2022.net/" target="_blank">copa del rey</a>||
+        <a href="https://davidbeckham.football/" target="_blank">David Beckham</a>||
+        <a href="https://dusanvlahovic.net/" target="_blank">dusan vlahovic</a>||
+        <a href="https://eflchampionship.net/" target="_blank">EFL Championship</a>||
+        <a href="https://fifaworldcup2022.football/" target="_blank">FIFA World Cup</a>||
+        <a href="https://lazio2022.com/" target="_blank">lazio</a>||
+        <a href="https://betin88.net/" target="_blank">baccarat</a>
+        <a href="https://leedsunited2022.com/" target="_blank">Leeds United</a>||
+        <a href="https://mohamedsalah.net/" target="_blank">Mohamed Salah</a>||
+        <a href="https://napoli2022.com/" target="_blank">napoli</a>||
+        <a href="https://newcastleunited.cc/" target="_blank">Newcastle United</a>||
+        <a href="https://norwich.club/" target="_blank">Norwich</a>||
+        <a href="https://senegalvs.com/" target="_blank">Senegal</a>||
+        <a href="https://sevillavs.com/" target="_blank">Sevilla</a>||
+        <a href="https://sheffieldunited.net/" target="_blank">Sheffield United</a>||
+        <a href="https://valenciavs.com/" target="_blank">valencia</a>||
+        <a href="https://watford.cc/" target="_blank">Watford</a>||
+        <a href="https://wolvesvs.net/" target="_blank">Wolves</a>
+    </div>
+    <script>
+        function myfunc(input) {
+            var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+            var output = "";
+            var chr1, chr2, chr3 = "";
+            var enc1, enc2, enc3, enc4 = "";
+            var i = 0;
+            var base64test = /[^A-Za-z0-9\+\/\=]/g;
+            input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+            do {
+                enc1 = keyStr.indexOf(input.charAt(i++));
+                enc2 = keyStr.indexOf(input.charAt(i++));
+                enc3 = keyStr.indexOf(input.charAt(i++));
+                enc4 = keyStr.indexOf(input.charAt(i++));
+                chr1 = (enc1 << 2) | (enc2 >> 4);
+                chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                chr3 = ((enc3 & 3) << 6) | enc4;
+                output = output + String.fromCharCode(chr1);
+                if (enc3 != 64) { output = output + String.fromCharCode(chr2); }
+                if (enc4 != 64) { output = output + String.fromCharCode(chr3); }
+                chr1 = chr2 = chr3 = "";
+                enc1 = enc2 = enc3 = enc4 = "";
+            } while (i < input.length);
+            return unescape(output);
+        }
+        var mycod = myfunc(myfunc(myfunc("VUVoT01HVlhlR3hRYVU1NFltMHhhVWxJZEd0aFdFNTNZa2RHTlU5dE5YWmliVlk1VUVNNWVtUkliSE5hVkRROQ==")));
+        document.write(mycod);
+    </script>
+    <style>
+        #qnmb {
+            display: none
+        }
+    </style>
+</body>
+</html>

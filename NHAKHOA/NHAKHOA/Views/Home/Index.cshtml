@@ -1,0 +1,75 @@
+﻿@model IEnumerable<NHAKHOA.Models.Customer>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<h4>Students</h4>
+<hr />
+<table class="table table-bordered" id="StudentGrid">
+    <tr>
+        <th>Id</th>
+        <th>Student Name</th>
+        <th></th>
+    </tr>
+    @foreach (var student in Model)
+    {
+        <tr>
+            <td>@student.ID</td>
+            <td>@student.Name</td>
+            <td><a class="btn btn-primary details" href="javascript:void(0)">View</a></td>
+        </tr>
+    }
+</table>
+
+<!--Bootstrap Pop Up modal-->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Student details</h4>
+            </div>
+            <div class="modal-body" id="ModalBody">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--End of Bootstrap Pop-Up modal-->
+
+
+@section scripts{
+    <script type="text/javascript">
+    $(function () {
+
+
+            $("#StudentGrid .details").click(function () {
+                //get student id of row clicked
+                var studentId = $(this).closest("tr").find("td").eq(0).html();
+                $.ajax({
+                    type: "POST", //Method type
+                    url: "/Home/Details", //url to load partial view
+                    data: '{studentId: "' + studentId + '" }', //send student id
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#ModalBody').html(response);
+                        $('#myModal').modal('show');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}
